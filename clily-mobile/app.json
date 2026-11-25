@@ -24,8 +24,8 @@
           "photosPermission": "Aplikasi membutuhkan akses galeri untuk memilih foto serangga.",
           "cameraPermission": "Aplikasi membutuhkan akses kamera untuk memotret serangga."
         }
-      ]
+      ],
+      "expo-asset"
     ]
   }
 }
-
