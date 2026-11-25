@@ -1,5 +1,7 @@
+import { Image } from 'react-native';
 import { create } from 'zustand';
 
+import { MOCK_AVATAR } from '../mocks/home';
 import type { User } from '../types/user.types';
 
 type AuthState = {
@@ -18,7 +20,8 @@ const mockUser = (username: string, email: string): User => ({
   id: 'mock-user',
   username,
   email,
-  avatarUrl: null,
+  // A bundled photo stands in for the uploaded avatar URL the API will return.
+  avatarUrl: Image.resolveAssetSource(MOCK_AVATAR).uri,
   language: 'id',
   xp: 50,
   title: 'Kontributor Aktif',

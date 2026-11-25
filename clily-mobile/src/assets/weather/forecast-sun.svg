@@ -1,0 +1,25 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="40" height="38.1667" viewBox="0 0 40 38.1667" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Matahari" filter="url(#filter0_d_0_40)">
+<path id="Line 80" d="M32.7257 24.9207C33.1233 25.3041 33.1233 25.9256 32.7257 26.3089C32.3282 26.6923 31.6836 26.6923 31.286 26.3089L32.0059 25.6148L32.7257 24.9207ZM28.0187 23.1586C27.6211 22.7753 27.6211 22.1537 28.0187 21.7704C28.4163 21.3871 29.0609 21.3871 29.4584 21.7704L28.7386 22.4645L28.0187 23.1586ZM32.0059 25.6148L31.286 26.3089L28.0187 23.1586L28.7386 22.4645L29.4584 21.7704L32.7257 24.9207L32.0059 25.6148Z" fill="#FFC64C"/>
+<line id="Line 81" x1="35" y1="14.4042" x2="30.3432" y2="14.4042" stroke-width="2" stroke-linecap="round" stroke="#FFC64C"/>
+<path id="Line 82" d="M29.7945 3.98922C30.1571 3.57261 30.7991 3.51648 31.2284 3.86385C31.6578 4.21123 31.7119 4.83056 31.3494 5.24718L30.572 4.6182L29.7945 3.98922ZM28.3834 8.65529C28.0209 9.07191 27.3789 9.12804 26.9495 8.78066C26.5202 8.43329 26.466 7.81395 26.8286 7.39734L27.606 8.02631L28.3834 8.65529ZM30.572 4.6182L31.3494 5.24718L28.3834 8.65529L27.606 8.02631L26.8286 7.39734L29.7945 3.98922L30.572 4.6182Z" fill="#FFC64C"/>
+<ellipse id="Ellipse 99" cx="19.6438" cy="15.0833" rx="7.6553" ry="7.3812" fill="#FFC64C"/>
+<line id="Line 78" x1="20.3103" y1="24.7482" x2="20.3103" y2="29.1667" stroke-width="2" stroke-linecap="round" stroke="#FFC64C"/>
+<line id="Line 73" x1="20.3104" y1="1" x2="20.3104" y2="5.41843" stroke-width="2" stroke-linecap="round" stroke="#FFC64C"/>
+<path id="Line 80_2" d="M7.27426 24.9207C6.87669 25.3041 6.87669 25.9256 7.27426 26.3089C7.67184 26.6923 8.31644 26.6923 8.71402 26.3089L7.99414 25.6148L7.27426 24.9207ZM11.9813 23.1586C12.3789 22.7753 12.3789 22.1537 11.9813 21.7704C11.5837 21.3871 10.9391 21.3871 10.5416 21.7704L11.2614 22.4645L11.9813 23.1586ZM7.99414 25.6148L8.71402 26.3089L11.9813 23.1586L11.2614 22.4645L10.5416 21.7704L7.27426 24.9207L7.99414 25.6148Z" fill="#FFC64C"/>
+<line id="Line 81_2" x1="5" y1="14.4042" x2="9.65678" y2="14.4042" stroke-width="2" stroke-linecap="round" stroke="#FFC64C"/>
+<path id="Line 82_2" d="M10.2055 3.98922C9.8429 3.57261 9.20092 3.51648 8.77156 3.86385C8.3422 4.21123 8.28806 4.83056 8.65062 5.24718L9.42804 4.6182L10.2055 3.98922ZM11.6166 8.65529C11.9791 9.07191 12.6211 9.12804 13.0505 8.78066C13.4798 8.43329 13.534 7.81395 13.1714 7.39734L12.394 8.02631L11.6166 8.65529ZM9.42804 4.6182L8.65062 5.24718L11.6166 8.65529L12.394 8.02631L13.1714 7.39734L10.2055 3.98922L9.42804 4.6182Z" fill="#FFC64C"/>
+</g>
+<defs>
+<filter id="filter0_d_0_40" x="0" y="0" width="40" height="38.1667" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_40"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_40" result="shape"/>
+</filter>
+</defs>
+</svg>

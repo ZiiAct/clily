@@ -26,6 +26,11 @@ export const colors = {
 
   shadow: '#000000',
   backdrop: 'rgba(0, 0, 0, 0.4)',
+
+  // Home / weather
+  ink: '#1A4F76', // "Baca lebih banyak" label, trivia image overlay
+  forecastPanel: '#3B6588', // weather forecast table
+  sun: '#FFC64C',
 } as const;
 
 export const gradients = {
@@ -39,13 +44,42 @@ export const gradients = {
   splash: [colors.mint, colors.mint, colors.white],
   /** Register background, top → bottom */
   register: [colors.mint, colors.mint, colors.onDark],
+  /** Light header variant (Cuaca), left → right */
+  headerLight: [colors.onDark, colors.mint],
+  /** Home "Ada Apa Hari Ini?" card, bottom-right → top-left (Figma -52°, green holds to 25%) */
+  homeNews: [colors.green, colors.green, '#307482'],
+  /** Home "Tahukah kamu?" card, left → right (teal holds to 32%) */
+  homeTrivia: [colors.teal, colors.teal, '#26607A'],
+  /** Home temperature map card, top → bottom */
+  homeMap: ['#50A08A', colors.blue],
+  /** Home footer, left → right (Figma rotates navy→blue by 180°) */
+  homeFooter: [colors.blue, colors.navy],
+  /** Pill buttons on home cards, left → right */
+  pillButton: [colors.mint, colors.white],
+  /** Trivia photo overlay, transparent top → ink bottom */
+  photoOverlay: ['rgba(26, 79, 118, 0)', 'rgba(26, 79, 118, 0)', colors.ink],
+  /** Heatmap screen background, top-left → bottom-right */
+  heatmapScreen: [colors.mint, '#8FD2AE'],
+  /** Temperature legend, -30 °C → 50 °C */
+  temperatureScale: [
+    '#8D62B9', '#373998', '#3B6BB2', '#4A9BC7', '#A7ED91', '#FBE463', '#F57328', '#D9252B', '#600030',
+  ],
 } as const;
+
+/** Stop positions for gradients.temperatureScale (from Figma) */
+export const temperatureScaleStops = [0, 0.125, 0.2548, 0.3846, 0.5192, 0.6442, 0.774, 0.9038, 1] as const;
 
 export const fonts = {
   regular: 'PlusJakartaSans_400Regular',
   medium: 'PlusJakartaSans_500Medium',
+  semiBold: 'PlusJakartaSans_600SemiBold',
   bold: 'PlusJakartaSans_700Bold',
   extraBold: 'PlusJakartaSans_800ExtraBold',
+  /** Figma uses Poppins for the news snippets and pill buttons on Beranda */
+  poppinsRegular: 'Poppins_400Regular',
+  poppinsMedium: 'Poppins_500Medium',
+  poppinsSemiBold: 'Poppins_600SemiBold',
+  poppinsExtraBold: 'Poppins_800ExtraBold',
 } as const;
 
 export const fontSizes = {
@@ -103,6 +137,22 @@ export const shadows = {
     shadowRadius: 5,
     elevation: 6,
   },
+  /** Home cards (Figma: 1 1 10 rgba(0,0,0,.25)) */
+  homeCard: {
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  /** Photos and pill buttons on home cards (Figma: 2 2 4 rgba(0,0,0,.25)) */
+  thumbnail: {
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 4,
+  },
   /** Illustration circles and verification code boxes (Figma: 0 4 2 rgba(0,0,0,.25)) */
   raised: {
     shadowColor: colors.shadow,
@@ -119,6 +169,12 @@ export const textShadows = {
     textShadowColor: 'rgba(0, 0, 0, 0.25)',
     textShadowOffset: { width: 0, height: 4 },
     textShadowRadius: 10,
+  },
+  /** Temperature legend labels (Figma: 1 1 5 rgba(0,0,0,.25)) */
+  legend: {
+    textShadowColor: 'rgba(0, 0, 0, 0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 5,
   },
 } as const;
 

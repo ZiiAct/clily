@@ -5,11 +5,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import ChevronIcon from '../assets/icons/chevron.svg';
+import ChevronNavyIcon from '../assets/icons/chevron-navy.svg';
 import HomeIcon from '../assets/icons/home.svg';
+import HomeNavyIcon from '../assets/icons/home-navy.svg';
 import { colors, fonts, fontSizes, gradients, layout, radius, shadows } from '../theme/tokens';
 
 type Props = {
   title: string;
+  /** navy: default gradient header. light: off-white → mint header with navy text (Figma: Cuaca). */
+  variant?: 'navy' | 'light';
   /** Defaults to going back in the navigation stack. */
   onBack?: () => void;
   showBack?: boolean;
@@ -19,17 +23,20 @@ type Props = {
 const ROW_HEIGHT = 44;
 const ROW_BOTTOM = 17; // keeps the row centered at y≈63 in the 102px Figma header
 
-/** Navy gradient header with back button, centered title and home button (Figma: KINGDOM header). */
-export function ScreenHeader({ title, onBack, showBack = true, showHome = true }: Props) {
+/** Gradient header with back button, centered title and home button (Figma: KINGDOM / CUACA header). */
+export function ScreenHeader({ title, variant = 'navy', onBack, showBack = true, showHome = true }: Props) {
   const insets = useSafeAreaInsets();
   const height = Math.max(layout.headerHeight, insets.top + ROW_HEIGHT + ROW_BOTTOM);
+  const light = variant === 'light';
+  const Chevron = light ? ChevronNavyIcon : ChevronIcon;
+  const Home = light ? HomeNavyIcon : HomeIcon;
 
   const handleBack = onBack ?? (() => (router.canGoBack() ? router.back() : router.replace('/home')));
 
   return (
-    <View style={[styles.wrapper, { height }]}>
+    <View style={[styles.wrapper, light && styles.wrapperLight, { height }]}>
       <LinearGradient
-        colors={gradients.header}
+        colors={light ? gradients.headerLight : gradients.header}
         start={{ x: 0, y: 0.5 }}
         end={{ x: 1, y: 0.5 }}
         style={styles.gradient}
@@ -45,13 +52,13 @@ export function ScreenHeader({ title, onBack, showBack = true, showHome = true }
               style={styles.iconButton}
             >
               <View style={styles.chevron}>
-                <ChevronIcon width={19.7176} height={12.8678} />
+                <Chevron width={19.7176} height={12.8678} />
               </View>
             </Pressable>
           )}
         </View>
 
-        <Text style={styles.title} numberOfLines={1}>
+        <Text style={[styles.title, light && styles.titleLight]} numberOfLines={1}>
           {title}
         </Text>
 
@@ -64,7 +71,7 @@ export function ScreenHeader({ title, onBack, showBack = true, showHome = true }
               hitSlop={8}
               style={styles.iconButton}
             >
-              <HomeIcon width={24} height={22} />
+              <Home width={24} height={22} />
             </Pressable>
           )}
         </View>
@@ -83,6 +90,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.navy, // keeps the shadow visible on Android
     zIndex: 1,
     ...shadows.header,
+  },
+  wrapperLight: {
+    backgroundColor: colors.onDark,
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderColor: colors.mint,
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,
@@ -118,5 +131,8 @@ const styles = StyleSheet.create({
     color: colors.onDark,
     fontFamily: fonts.bold,
     fontSize: fontSizes.headerTitle,
+  },
+  titleLight: {
+    color: colors.navy,
   },
 });
