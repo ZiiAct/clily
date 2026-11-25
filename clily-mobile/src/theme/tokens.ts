@@ -60,6 +60,22 @@ export const gradients = {
   photoOverlay: ['rgba(26, 79, 118, 0)', 'rgba(26, 79, 118, 0)', colors.ink],
   /** Heatmap screen background, top-left → bottom-right */
   heatmapScreen: [colors.mint, '#8FD2AE'],
+  /** Encyclopedia class cards (Kelas), left → right; reverse for alternating cards */
+  classCard: ['#50A08A', colors.navy],
+  /** Family pills on the Ordo screen, left → right; reverse for alternating pills */
+  familyPill: [colors.navy, colors.teal],
+  /** Breadcrumb pill, left → right */
+  breadcrumb: ['#50A08A', colors.green],
+  /** Ordo and Famili screen background (Figma 23.5°: navy bottom-left → teal top-right) */
+  taxonDark: [colors.navy, colors.teal],
+  /** Genus (species list) background (Figma 61.5°: teal bottom-left → navy top-right) */
+  taxonGenus: [colors.teal, colors.navy],
+  /** Ordo screen panel, top → bottom */
+  familyPanel: [colors.mint, colors.onDark],
+  /** Photo tiles: transparent until ~45%, navy at the bottom-left corner */
+  photoNavyOverlay: ['rgba(18, 65, 112, 0)', 'rgba(18, 65, 112, 0)', colors.navy],
+  /** Filter bottom sheet, top → bottom */
+  sheet: [colors.white, colors.white, colors.mint],
   /** Temperature legend, -30 °C → 50 °C */
   temperatureScale: [
     '#8D62B9', '#373998', '#3B6BB2', '#4A9BC7', '#A7ED91', '#FBE463', '#F57328', '#D9252B', '#600030',

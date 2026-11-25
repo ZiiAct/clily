@@ -1,27 +1,34 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import FilterIcon from '../assets/icons/filter.svg';
+import FilterIconLight from '../assets/icons/filter-light.svg';
 import { colors, fonts, fontSizes, radius } from '../theme/tokens';
 
 type Props = {
   label?: string;
   onPress?: () => void;
+  /** dark: navy text on light backgrounds. light: mint text on dark gradient backgrounds. */
+  tone?: 'dark' | 'light';
+  /** Shows a small dot when filters are active */
+  active?: boolean;
   style?: StyleProp<ViewStyle>;
 };
 
 /** Green-outlined pill that opens the filter sheet (Figma: Component 3). */
-export function FilterChip({ label = 'Filter', onPress, style }: Props) {
+export function FilterChip({ label = 'Filter', onPress, tone = 'dark', active, style }: Props) {
+  const Icon = tone === 'light' ? FilterIconLight : FilterIcon;
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={active ? `${label}, filter aktif` : label}
       hitSlop={{ top: 8, bottom: 8 }}
       style={({ pressed }) => [styles.chip, pressed && styles.pressed, style]}
     >
-      <FilterIcon width={22} height={20} />
-      <Text style={styles.label}>{label}</Text>
+      <Icon width={22} height={20} />
+      <Text style={[styles.label, tone === 'light' && styles.labelLight]}>{label}</Text>
+      {active && <View style={styles.dot} />}
     </Pressable>
   );
 }
@@ -46,5 +53,19 @@ const styles = StyleSheet.create({
     color: colors.navy,
     fontFamily: fonts.regular,
     fontSize: fontSizes.body,
+  },
+  labelLight: {
+    color: colors.mint,
+  },
+  dot: {
+    position: 'absolute',
+    top: -3,
+    right: -3,
+    width: 9,
+    height: 9,
+    borderRadius: 4.5,
+    backgroundColor: colors.green,
+    borderWidth: 1.5,
+    borderColor: colors.white,
   },
 });
