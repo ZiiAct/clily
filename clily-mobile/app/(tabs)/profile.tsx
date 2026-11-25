@@ -1,14 +1,18 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Linking } from 'react-native';
+import { router } from 'expo-router';
 
-import { ScreenHeader } from '../../src/components/ScreenHeader';
-import { ComingSoon } from '../../src/components/ComingSoon';
+import { ProfileScreen } from '../../src/screens/profile/ProfileScreen';
 
 export default function ProfileRoute() {
   return (
-    <View style={{ flex: 1 }}>
-      <ScreenHeader title="Profil Saya" />
-      <ComingSoon title="Profil Saya" phase={8} />
-    </View>
+    <ProfileScreen
+      // Same destination as Beranda's "Hubungi Admin" until a support channel is defined.
+      onContactSupport={() => Linking.openURL('https://www.whatsapp.com')}
+      onLoggedOut={() => {
+        router.dismissAll();
+        router.replace('/welcome');
+      }}
+    />
   );
 }

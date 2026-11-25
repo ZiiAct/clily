@@ -11,6 +11,8 @@ type AuthState = {
   /** Mock register: creates a local user and signs in. */
   register: (input: { username: string; email: string; password: string }) => Promise<void>;
   logout: () => void;
+  /** Mock PATCH /me: updates the signed-in user locally. */
+  updateProfile: (changes: Partial<Pick<User, 'username' | 'email' | 'phone' | 'avatarUrl' | 'language'>>) => Promise<void>;
 };
 
 /** Simulated network delay so loading states are visible. */
@@ -43,4 +45,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ user: mockUser(username, email) });
   },
   logout: () => set({ user: null }),
+  updateProfile: async (changes) => {
+    await fakeDelay(300);
+    set((state) => (state.user ? { user: { ...state.user, ...changes } } : state));
+  },
 }));
