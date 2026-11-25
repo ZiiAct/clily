@@ -101,6 +101,18 @@ export const MOCK_SPECIES: Species[] = [
     conservationStatus: 'rentan',
   },
   {
+    // From the Figma "sebaran spesies" / Galeri frames; not in the mocked taxonomy branch.
+    id: 'elymnias-hypermnestra',
+    scientificName: 'Elymnias hypermnestra',
+    commonName: 'Kupu-kupu Common Palmfly',
+    genusId: null,
+    photo: require('./images/species-elymnias.jpg'),
+    habitat: ['darat', 'hutan'],
+    diet: ['herbivora'],
+    traits: ['terbang'],
+    conservationStatus: 'risiko-rendah',
+  },
+  {
     id: 'padda-oryzata',
     scientificName: 'Padda oryzata',
     commonName: 'Gelatik Jawa',

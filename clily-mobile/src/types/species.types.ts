@@ -40,3 +40,27 @@ export type SpeciesFilters = {
 };
 
 export const EMPTY_FILTERS: SpeciesFilters = { habitat: [], diet: [], traits: [], status: [] };
+
+/** IUCN Red List category, shown in English as in Figma ("Vulnerable"). */
+export type IucnStatus = 'Least Concern' | 'Near Threatened' | 'Vulnerable' | 'Endangered' | 'Critically Endangered';
+export type PopulationTrend = 'Meningkat' | 'Stabil' | 'Menurun';
+
+/** Sighting area on the distribution map, in map-box pixels (365 × 530 at 1× zoom). */
+export type Hotspot = { x: number; y: number; w: number; h: number };
+
+export type CommunityPhoto = { id: string; photo: ImageSource; author: string };
+
+/** Everything the species detail and distribution screens need. */
+export type SpeciesDetail = Species & {
+  /** English common name shown in brackets under the title, e.g. "The Monarch" */
+  englishName: string;
+  /** Carousel photos; the first is the main photo */
+  gallery: ImageSource[];
+  /** Taxonomy rows in display order, e.g. ["Sub-filum", "Hexapoda"] */
+  taxonomy: [label: string, value: string][];
+  iucnStatus: IucnStatus;
+  populationTrend: PopulationTrend;
+  description: string;
+  distribution: { map: ImageSource; hotspots: Hotspot[] };
+  communityPhotos: CommunityPhoto[];
+};

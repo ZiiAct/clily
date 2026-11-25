@@ -27,6 +27,13 @@ export const colors = {
   shadow: '#000000',
   backdrop: 'rgba(0, 0, 0, 0.4)',
 
+  // Conservation status / population trend labels (Figma: Vulnerable #FFC64C, Menurun #FF2200)
+  statusSafe: '#2E9E6B',
+  statusWarning: '#FFC64C',
+  statusDanger: '#FF2200',
+  hotspot: 'rgba(233, 62, 62, 0.43)', // sighting areas on the distribution map
+  mapBorder: '#4F9F8A',
+
   // Home / weather
   ink: '#1A4F76', // "Baca lebih banyak" label, trivia image overlay
   forecastPanel: '#3B6588', // weather forecast table
@@ -76,6 +83,16 @@ export const gradients = {
   photoNavyOverlay: ['rgba(18, 65, 112, 0)', 'rgba(18, 65, 112, 0)', colors.navy],
   /** Filter bottom sheet, top → bottom */
   sheet: [colors.white, colors.white, colors.mint],
+  /** Species detail screen background, top → bottom */
+  speciesScreen: [colors.mint, colors.green],
+  /** Species detail info panel (Figma 41°: navy bottom-left → teal top-right) */
+  speciesPanel: [colors.navy, colors.teal],
+  /** Keadaan / Populasi boxes, left → right (mint holds to 58%) */
+  statBox: [colors.mint, colors.mint, colors.white],
+  /** "Lihat Foto Lainnya" sheet, top → bottom */
+  communitySheet: [colors.green, colors.teal, '#31707D'],
+  /** Bottom fade on the community sheet */
+  navyFade: ['rgba(18, 65, 112, 0)', colors.navy],
   /** Temperature legend, -30 °C → 50 °C */
   temperatureScale: [
     '#8D62B9', '#373998', '#3B6BB2', '#4A9BC7', '#A7ED91', '#FBE463', '#F57328', '#D9252B', '#600030',
@@ -87,6 +104,7 @@ export const temperatureScaleStops = [0, 0.125, 0.2548, 0.3846, 0.5192, 0.6442, 
 
 export const fonts = {
   regular: 'PlusJakartaSans_400Regular',
+  italic: 'PlusJakartaSans_400Regular_Italic',
   medium: 'PlusJakartaSans_500Medium',
   semiBold: 'PlusJakartaSans_600SemiBold',
   bold: 'PlusJakartaSans_700Bold',

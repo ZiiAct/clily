@@ -1,5 +1,6 @@
 import { MOCK_SPECIES, MOCK_TAXA } from '../mocks/encyclopedia';
-import type { Species, SpeciesFilters, Taxon } from '../types/species.types';
+import { MOCK_DISTRIBUTION, MOCK_SPECIES_DETAILS } from '../mocks/speciesDetails';
+import type { Species, SpeciesDetail, SpeciesFilters, Taxon } from '../types/species.types';
 import { mockResponse } from './mock';
 
 /**
@@ -47,6 +48,28 @@ export function getTaxonPage(taxonId: string | null): Promise<TaxonPage> {
     path: taxon ? pathTo(taxon) : [],
     children,
     species: taxon?.rank === 'genus' ? MOCK_SPECIES.filter((s) => s.genusId === taxon?.id) : [],
+  });
+}
+
+/** GET /species/:id — detail, distribution and community photos. Rejects for unknown ids. */
+export async function getSpeciesDetail(id: string): Promise<SpeciesDetail> {
+  const species = MOCK_SPECIES.find((s) => s.id === id);
+  const detail = MOCK_SPECIES_DETAILS[id];
+  if (!species || !detail) {
+    await mockResponse(null);
+    throw new Error(`Spesies "${id}" tidak ditemukan`);
+  }
+  return mockResponse({
+    ...species,
+    englishName: detail.englishName,
+    gallery: detail.gallery ?? [species.photo],
+    taxonomy: detail.taxonomy,
+    iucnStatus: detail.iucnStatus,
+    populationTrend: detail.populationTrend,
+    description: detail.description,
+    distribution: { map: MOCK_DISTRIBUTION.map, hotspots: detail.hotspots ?? MOCK_DISTRIBUTION.hotspots },
+    // Only species with their own mock photos get them; never show another species' photos.
+    communityPhotos: detail.communityPhotos ?? [],
   });
 }
 
