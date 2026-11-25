@@ -1,14 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
+import { router } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 
-import { ScreenHeader } from '../../src/components/ScreenHeader';
-import { ComingSoon } from '../../src/components/ComingSoon';
+import { NewsScreen } from '../../src/screens/news/NewsScreen';
 
 export default function ArticlesRoute() {
   return (
-    <View style={{ flex: 1 }}>
-      <ScreenHeader title="Berita" />
-      <ComingSoon title="Berita Terhangat" phase={7} />
-    </View>
+    <NewsScreen
+      onOpenArticle={(a) => router.push(`/articles/${a.id}`)}
+      onOpenLink={(a) => WebBrowser.openBrowserAsync(a.url)}
+    />
   );
 }

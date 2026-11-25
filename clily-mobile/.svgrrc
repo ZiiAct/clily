@@ -7,7 +7,7 @@
       },
       {
         "name": "removeAttrs",
-        "params": { "attrs": ["svg:style", "*:filter"] }
+        "params": { "attrs": ["*:style", "*:filter"] }
       }
     ]
   }

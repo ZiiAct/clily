@@ -34,6 +34,13 @@ export const colors = {
   hotspot: 'rgba(233, 62, 62, 0.43)', // sighting areas on the distribution map
   mapBorder: '#4F9F8A',
 
+  // Trivia / Berita
+  bodyDark: '#001B36', // article body text after the photo
+  scrim: 'rgba(49, 49, 49, 0.44)', // behind the add-trivia form
+  photoSlot: '#EFEFEF', // "+" photo button in the trivia form
+  sheetHandle: '#76C79B',
+  avatar: '#26667F', // comment author placeholder
+
   // Home / weather
   ink: '#1A4F76', // "Baca lebih banyak" label, trivia image overlay
   forecastPanel: '#3B6588', // weather forecast table
@@ -89,6 +96,18 @@ export const gradients = {
   speciesPanel: [colors.navy, colors.teal],
   /** Keadaan / Populasi boxes, left → right (mint holds to 58%) */
   statBox: [colors.mint, colors.mint, colors.white],
+  /** Trivia card (Figma 122.9°: green top-left → navy bottom-right) */
+  triviaCard: [colors.green, colors.navy],
+  /** Add-trivia form panel (Figma 151.6°) */
+  triviaForm: [colors.teal, colors.teal, '#5BAF8D', colors.mint],
+  /** Round pencil / send buttons (green → mint) */
+  softButton: [colors.green, colors.mint],
+  /** News card photo overlay, transparent until ~63% then navy */
+  newsOverlay: ['rgba(18, 65, 112, 0)', 'rgba(18, 65, 112, 0)', colors.navy],
+  /** Article screen background (Figma 146°) */
+  articleScreen: [colors.onDark, colors.mint],
+  /** Komentar sheet, top → bottom (navy holds to ~10%) */
+  commentSheet: [colors.navy, colors.navy, colors.teal],
   /** "Lihat Foto Lainnya" sheet, top → bottom */
   communitySheet: [colors.green, colors.teal, '#31707D'],
   /** Bottom fade on the community sheet */
@@ -103,6 +122,7 @@ export const gradients = {
 export const temperatureScaleStops = [0, 0.125, 0.2548, 0.3846, 0.5192, 0.6442, 0.774, 0.9038, 1] as const;
 
 export const fonts = {
+  light: 'PlusJakartaSans_300Light',
   regular: 'PlusJakartaSans_400Regular',
   italic: 'PlusJakartaSans_400Regular_Italic',
   medium: 'PlusJakartaSans_500Medium',

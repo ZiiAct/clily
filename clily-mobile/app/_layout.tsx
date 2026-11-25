@@ -6,6 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   useFonts,
+  PlusJakartaSans_300Light,
   PlusJakartaSans_400Regular,
   PlusJakartaSans_400Regular_Italic,
   PlusJakartaSans_500Medium,
@@ -29,6 +30,7 @@ export default function RootLayout() {
     () => new QueryClient({ defaultOptions: { queries: { staleTime: 5 * 60 * 1000, retry: 1 } } }),
   );
   const [fontsLoaded, fontError] = useFonts({
+    PlusJakartaSans_300Light,
     PlusJakartaSans_400Regular,
     PlusJakartaSans_400Regular_Italic,
     PlusJakartaSans_500Medium,
