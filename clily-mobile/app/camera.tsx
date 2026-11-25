@@ -1,14 +1,20 @@
 import React from 'react';
-import { View } from 'react-native';
+import { router } from 'expo-router';
 
-import { ScreenHeader } from '../src/components/ScreenHeader';
-import { ComingSoon } from '../src/components/ComingSoon';
+import { CameraScreen } from '../src/screens/scan/CameraScreen';
+import { useScan } from '../src/hooks/useScan';
+import { useGalleryStore } from '../src/store/galleryStore';
 
 export default function CameraRoute() {
+  const identify = useScan();
+  const latestPhoto = useGalleryStore((s) => s.items[0]?.photo);
+
   return (
-    <View style={{ flex: 1 }}>
-      <ScreenHeader title="Kamera" />
-      <ComingSoon title="Kamera / Scan" phase={6} />
-    </View>
+    <CameraScreen
+      latestPhoto={latestPhoto}
+      onIdentify={identify}
+      onShowResult={(scanId) => router.replace(`/scan/${scanId}`)}
+      onOpenGallery={() => router.push('/gallery')}
+    />
   );
 }

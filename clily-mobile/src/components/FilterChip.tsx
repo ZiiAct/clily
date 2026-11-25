@@ -12,11 +12,13 @@ type Props = {
   tone?: 'dark' | 'light';
   /** Shows a small dot when filters are active */
   active?: boolean;
+  /** White fill (Figma: Galeri Fotomu) instead of a transparent pill */
+  filled?: boolean;
   style?: StyleProp<ViewStyle>;
 };
 
 /** Green-outlined pill that opens the filter sheet (Figma: Component 3). */
-export function FilterChip({ label = 'Filter', onPress, tone = 'dark', active, style }: Props) {
+export function FilterChip({ label = 'Filter', onPress, tone = 'dark', active, filled, style }: Props) {
   const Icon = tone === 'light' ? FilterIconLight : FilterIcon;
   return (
     <Pressable
@@ -24,7 +26,7 @@ export function FilterChip({ label = 'Filter', onPress, tone = 'dark', active, s
       accessibilityRole="button"
       accessibilityLabel={active ? `${label}, filter aktif` : label}
       hitSlop={{ top: 8, bottom: 8 }}
-      style={({ pressed }) => [styles.chip, pressed && styles.pressed, style]}
+      style={({ pressed }) => [styles.chip, filled && styles.filled, pressed && styles.pressed, style]}
     >
       <Icon width={22} height={20} />
       <Text style={[styles.label, tone === 'light' && styles.labelLight]}>{label}</Text>
@@ -45,6 +47,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.green,
     borderRadius: radius.pill,
+  },
+  filled: {
+    backgroundColor: colors.white,
   },
   pressed: {
     opacity: 0.7,
