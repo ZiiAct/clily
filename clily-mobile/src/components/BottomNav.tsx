@@ -137,16 +137,29 @@ function TabItem({ name, active, onPress }: TabItemProps) {
   );
 }
 
-export function BottomNav({ state, navigation }: BottomTabBarProps) {
+type BottomNavProps = Partial<Pick<BottomTabBarProps, 'navigation'>> &
+  Pick<BottomTabBarProps, 'state'>;
+
+export function BottomNav({ state, navigation }: BottomNavProps) {
   const insets = useSafeAreaInsets();
   const activeRoute = state.routes[state.index]?.name;
 
   const goTo = (name: TabName) => {
-    const route = state.routes.find((r) => r.name === name);
+    const route = state.routes.find((r: (typeof state.routes)[number]) => r.name === name);
     if (!route) return;
-    const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-    if (activeRoute !== name && !event.defaultPrevented) {
-      navigation.navigate(name);
+
+    const event = navigation?.emit?.({
+      type: 'tabPress',
+      target: route.key,
+      canPreventDefault: true,
+    });
+
+    if (activeRoute !== name && !event?.defaultPrevented) {
+      if (typeof navigation?.navigate === 'function') {
+        navigation.navigate(name);
+      } else {
+        router.navigate(route.name as never);
+      }
     }
   };
 
