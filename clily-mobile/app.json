@@ -25,7 +25,10 @@
           "cameraPermission": "Aplikasi membutuhkan akses kamera untuk memotret serangga."
         }
       ],
-      "expo-asset"
-    ]
+      "expo-asset",
+      "expo-router",
+      "expo-font"
+    ],
+    "scheme": "clily"
   }
 }
