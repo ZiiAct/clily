@@ -33,13 +33,19 @@ type Art = {
   boxW: number;
   boxH: number;
   transform?: NonNullable<TransformsStyle['transform']>;
+  /**
+   * Width of the Figma container. When set, the art is anchored to the right
+   * edge so it stays in place on screens narrower or wider than the design.
+   */
+  rightOf?: number;
 };
 
 function Silhouette({ art }: { art: Art }) {
+  const horizontal = art.rightOf !== undefined ? { right: art.rightOf - art.x - art.boxW } : { left: art.x };
   return (
     <View
       pointerEvents="none"
-      style={{ position: 'absolute', left: art.x, top: art.y, width: art.boxW, height: art.boxH, alignItems: 'center', justifyContent: 'center' }}
+      style={{ position: 'absolute', ...horizontal, top: art.y, width: art.boxW, height: art.boxH, alignItems: 'center', justifyContent: 'center' }}
     >
       <View style={{ transform: art.transform }}>
         <art.Svg width={art.svgW} height={art.svgH} />
@@ -48,20 +54,33 @@ function Silhouette({ art }: { art: Art }) {
   );
 }
 
+/** Figma card width used to anchor right-side art (kingdom and class cards). */
+const CARD_W = 372;
+
 // ---------- Kingdom cards (Figma: "<Kingdom> button", 372 × 132) ----------
 
 type CardSide = 'left' | 'right';
 
 const KINGDOM_ART: Record<string, { art: Art; labelSide: CardSide }> = {
   animalia: { labelSide: 'right', art: { Svg: Animalia, svgW: 129, svgH: 152, x: 0, y: -10, boxW: 129, boxH: 152 } },
-  plantae: { labelSide: 'left', art: { Svg: Plantae, svgW: 183.9, svgH: 154.001, x: 204, y: -11, boxW: 183.9, boxH: 154 } },
+  plantae: { labelSide: 'left', art: { Svg: Plantae, svgW: 183.9, svgH: 154.001, x: 204, y: -11, boxW: 183.9, boxH: 154, rightOf: CARD_W } },
   fungi: {
     labelSide: 'right',
     art: { Svg: Fungi, svgW: 146, svgH: 137.301, x: 0, y: 0.35, boxW: 146, boxH: 137.3, transform: [{ scaleX: -1 }] },
   },
   protista: {
     labelSide: 'left',
-    art: { Svg: Protista, svgW: 193.227, svgH: 143.159, x: 207, y: -25.36, boxW: 220.335, boxH: 182.724, transform: [{ rotate: '-12.91deg' }] },
+    art: {
+      Svg: Protista,
+      svgW: 193.227,
+      svgH: 143.159,
+      x: 207,
+      y: -25.36,
+      boxW: 220.335,
+      boxH: 182.724,
+      transform: [{ rotate: '-12.91deg' }],
+      rightOf: CARD_W,
+    },
   },
   monera: { labelSide: 'right', art: { Svg: Monera, svgW: 132.565, svgH: 158.913, x: 5.43, y: -13.46, boxW: 132.565, boxH: 158.913 } },
 };
@@ -95,14 +114,24 @@ const CLASS_ART: Record<string, { art: Art; labelSide: CardSide }> = {
     labelSide: 'right',
     art: { Svg: Insecta, svgW: 70, svgH: 80.0257, x: 7, y: -9, boxW: 85.3, boxH: 92.96, transform: [{ rotate: '12.15deg' }] },
   },
-  crustacea: { labelSide: 'left', art: { Svg: Crustacea, svgW: 107, svgH: 83, x: 248, y: -8, boxW: 107, boxH: 83 } },
+  crustacea: { labelSide: 'left', art: { Svg: Crustacea, svgW: 107, svgH: 83, x: 248, y: -8, boxW: 107, boxH: 83, rightOf: CARD_W } },
   myriapoda: {
     labelSide: 'right',
     art: { Svg: Myriapoda, svgW: 112, svgH: 112, x: -12, y: -36, boxW: 135.8, boxH: 135.8, transform: [{ rotate: '-14deg' }] },
   },
   arachnida: {
     labelSide: 'left',
-    art: { Svg: Arachnida, svgW: 81.6885, svgH: 87.6877, x: 265, y: -12, boxW: 93, boxH: 98.15, transform: [{ rotate: '-7.96deg' }] },
+    art: {
+      Svg: Arachnida,
+      svgW: 81.6885,
+      svgH: 87.6877,
+      x: 265,
+      y: -12,
+      boxW: 93,
+      boxH: 98.15,
+      transform: [{ rotate: '-7.96deg' }],
+      rightOf: CARD_W,
+    },
   },
 };
 
@@ -142,7 +171,19 @@ export function FamilyPanel({ families, onPress }: { families: Taxon[]; onPress:
   return (
     <View style={styles.familyPanel}>
       <LinearGradient colors={gradients.familyPanel} style={StyleSheet.absoluteFill} />
-      <Silhouette art={{ Svg: ButterflyNavy, svgW: 118.215, svgH: 101.238, x: 265.5, y: -24.66, boxW: 148.9, boxH: 138.3, transform: [{ rotate: '-22.45deg' }] }} />
+      <Silhouette
+        art={{
+          Svg: ButterflyNavy,
+          svgW: 118.215,
+          svgH: 101.238,
+          x: 265.5,
+          y: -24.66,
+          boxW: 148.9,
+          boxH: 138.3,
+          transform: [{ rotate: '-22.45deg' }],
+          rightOf: 375, // Figma family panel width
+        }}
+      />
       <View style={styles.familyBottomArt}>
         <Silhouette art={{ Svg: ButterflyGreen, svgW: 152.395, svgH: 130.291, x: -37, y: 0, boxW: 186.75, boxH: 171.2, transform: [{ rotate: '18.31deg' }] }} />
       </View>

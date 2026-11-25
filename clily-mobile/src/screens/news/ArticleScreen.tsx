@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import CommentBubble from '../../assets/icons/comment-bubble.svg';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { Skeleton, SkeletonGroup, SkeletonLines } from '../../components/Skeleton';
+import { StateMessage, errorMessage } from '../../components/StateMessage';
 import { CommentsSheet } from '../../components/news/CommentsSheet';
 import { SourceBadge } from '../../components/news/SourceBadge';
 import { useArticle, useComments } from '../../hooks/useNewsQueries';
@@ -38,14 +40,18 @@ export function ArticleScreen({ articleId }: Props) {
       <ScreenHeader title="Berita" />
 
       {!article ? (
-        <View style={styles.state}>
-          {isPending && <ActivityIndicator color={colors.navy} />}
-          {isError && (
-            <Text style={styles.stateText} onPress={() => refetch()} accessibilityRole="button">
-              Artikel tidak dapat dimuat. Ketuk untuk mencoba lagi.
-            </Text>
-          )}
-        </View>
+        isError && !isPending ? (
+          <StateMessage message={errorMessage('Artikel')} actionLabel="Coba lagi" onAction={() => refetch()} />
+        ) : (
+          <SkeletonGroup label="Memuat artikel" style={styles.skeleton}>
+            <SkeletonLines lines={3} lineHeight={36} gap={10} />
+            <Skeleton width={140} height={35} radius={18} style={styles.skeletonGap} />
+            <View style={styles.skeletonGap}>
+              <SkeletonLines lines={6} />
+            </View>
+            <Skeleton height={212} style={styles.skeletonGap} />
+          </SkeletonGroup>
+        )
       ) : (
         <>
           <ScrollView contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 96 }]} showsVerticalScrollIndicator={false}>
@@ -96,17 +102,12 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  state: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
+  skeleton: {
+    paddingTop: 16,
+    paddingHorizontal: 21,
   },
-  stateText: {
-    color: colors.navy,
-    fontFamily: fonts.medium,
-    fontSize: 14,
-    textAlign: 'center',
+  skeletonGap: {
+    marginTop: 20,
   },
   content: {
     paddingTop: 16,

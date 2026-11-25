@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   KeyboardAvoidingView,
   Modal,
@@ -18,6 +17,8 @@ import LikeIcon from '../../assets/icons/like.svg';
 import LikeActiveIcon from '../../assets/icons/like-active.svg';
 import SendCircle from '../../assets/icons/send-circle.svg';
 import SendArrow from '../../assets/icons/send-arrow.svg';
+import { Skeleton, SkeletonGroup } from '../Skeleton';
+import { StateMessage } from '../StateMessage';
 import { useNewsStore } from '../../store/newsStore';
 import { colors, fonts, gradients } from '../../theme/tokens';
 import type { Comment } from '../../types/news.types';
@@ -59,13 +60,17 @@ export function CommentsSheet({ visible, comments, loading, onSend, onClose }: P
         </View>
 
         {loading ? (
-          <ActivityIndicator color={colors.mint} style={styles.loading} />
+          <SkeletonGroup label="Memuat komentar" style={styles.list}>
+            {[118, 87, 118].map((h, i) => (
+              <Skeleton key={i} height={h} radius={16} tone="dark" />
+            ))}
+          </SkeletonGroup>
         ) : (
           <FlatList
             data={comments}
             keyExtractor={(c) => c.id}
             contentContainerStyle={styles.list}
-            ListEmptyComponent={<Text style={styles.empty}>Belum ada komentar. Jadilah yang pertama!</Text>}
+            ListEmptyComponent={<StateMessage tone="light" message="Belum ada komentar. Jadilah yang pertama!" />}
             renderItem={({ item }) => (
               <View style={styles.comment} accessible accessibilityLabel={`${item.author}: ${item.text}`}>
                 <View style={styles.commentHeader}>
@@ -145,19 +150,9 @@ const styles = StyleSheet.create({
     fontFamily: fonts.extraBold,
     fontSize: 15,
   },
-  loading: {
-    flex: 1,
-  },
   list: {
     gap: 12,
     paddingBottom: 12,
-  },
-  empty: {
-    marginTop: 40,
-    textAlign: 'center',
-    color: colors.mint,
-    fontFamily: fonts.medium,
-    fontSize: 14,
   },
   comment: {
     borderRadius: 16,

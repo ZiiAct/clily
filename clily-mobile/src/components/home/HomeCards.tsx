@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Image,
   Pressable,
@@ -16,6 +15,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import NewsPanel from '../../assets/illustrations/news-panel.svg';
 import { PillButton } from './PillButton';
+import { Skeleton, SkeletonGroup } from '../Skeleton';
+import { StateMessage, errorMessage } from '../StateMessage';
 import { colors, fonts, gradients, shadows } from '../../theme/tokens';
 import type { Article, Fact, ImageSource } from '../../types/content.types';
 
@@ -39,16 +40,29 @@ function Photo({ source, x, y, w, h, shadow = true }: { source?: ImageSource; x:
   );
 }
 
-function CardState({ loading, error, onRetry }: { loading: boolean; error: boolean; onRetry: () => void }) {
-  if (loading) return <ActivityIndicator color={colors.mint} />;
-  if (error) {
-    return (
-      <Text style={styles.stateText} onPress={onRetry} accessibilityRole="button">
-        Gagal memuat. Ketuk untuk mencoba lagi.
-      </Text>
-    );
-  }
-  return null;
+/** Loading placeholders at the exact photo / text slots of the news card. */
+function NewsCardSkeleton() {
+  const block = (x: number, y: number, w: number, h: number, radius = 10) => (
+    <Abs x={x} y={y}>
+      <Skeleton width={w} height={h} radius={radius} tone="dark" />
+    </Abs>
+  );
+  return (
+    <SkeletonGroup label="Memuat berita hari ini" style={StyleSheet.absoluteFill}>
+      {block(201, 60, 152, 99)}
+      {block(61, 129, 126, 139)}
+      {block(201, 172, 152, 12, 6)}
+      {block(201, 192, 152, 12, 6)}
+      {block(201, 212, 110, 12, 6)}
+      {block(62, 294, 214, 87)}
+      {block(287, 294, 66, 87)}
+      {block(60, 395, 291, 12, 6)}
+      {block(60, 415, 200, 12, 6)}
+      {block(62, 475, 151, 12, 6)}
+      {block(62, 495, 120, 12, 6)}
+      {block(227, 469, 126, 108)}
+    </SkeletonGroup>
+  );
 }
 
 // ---------- "Ada Apa Hari Ini?" ----------
@@ -75,11 +89,14 @@ function Snippet({ article, x, y, w, numberOfLines }: { article?: Article; x: nu
 
 function ReadMore({ x, y, onPress }: { x: number; y: number; onPress: () => void }) {
   // Right edge sits at x; the label is right-aligned in a 152px box as in Figma.
+  // The 10px label gets a larger touch area (≈44px tall).
   return (
     <Abs x={x - 152} y={y} w={152}>
-      <Text onPress={onPress} accessibilityRole="link" style={styles.readMore} suppressHighlighting>
-        selengkapnya
-      </Text>
+      <Pressable onPress={onPress} accessibilityRole="link" accessibilityLabel="Baca selengkapnya" hitSlop={{ top: 15, bottom: 15, left: 8, right: 8 }} style={styles.readMoreTouch}>
+        <Text style={styles.readMore} maxFontSizeMultiplier={1.2}>
+          selengkapnya
+        </Text>
+      </Pressable>
     </Abs>
   );
 }
@@ -109,9 +126,13 @@ export function NewsHighlightsCard({ articles, loading, error, onRetry, onOpenAr
       </Abs>
 
       {!articles ? (
-        <Abs x={43} y={300} w={327} style={styles.center}>
-          <CardState loading={loading} error={error} onRetry={onRetry} />
-        </Abs>
+        loading || !error ? (
+          <NewsCardSkeleton />
+        ) : (
+          <Abs x={43} y={240} w={327}>
+            <StateMessage tone="light" message={errorMessage('Berita hari ini')} actionLabel="Coba lagi" onAction={onRetry} />
+          </Abs>
+        )
       ) : (
         <>
           {/* Article 1: photo top-right, second photo left, snippet under the right photo */}
@@ -190,9 +211,15 @@ export function FactsCard({ facts, loading, error, onRetry, onOpen }: FactsCardP
 
       <Abs x={42.5} y={767} w={SLIDE_W} h={221}>
         {!facts ? (
-          <View style={[styles.slide, styles.center]}>
-            <CardState loading={loading} error={error} onRetry={onRetry} />
-          </View>
+          loading || !error ? (
+            <SkeletonGroup label="Memuat fakta menarik">
+              <Skeleton width={SLIDE_W} height={SLIDE_H} radius={20} tone="dark" />
+            </SkeletonGroup>
+          ) : (
+            <View style={[styles.slide, styles.center]}>
+              <StateMessage tone="light" message={errorMessage('Fakta')} actionLabel="Coba lagi" onAction={onRetry} />
+            </View>
+          )
         ) : (
           <>
             <FlatList
@@ -272,12 +299,12 @@ export function HomeFooter({ onFeedback, onContactAdmin }: { onFeedback: () => v
         end={{ x: 1, y: 0.5 }}
         style={[StyleSheet.absoluteFill, styles.footer]}
       />
-      <Text onPress={onFeedback} accessibilityRole="link" style={[styles.footerLink, { marginTop: 40 }]}>
-        Berikan umpan balik
-      </Text>
-      <Text onPress={onContactAdmin} accessibilityRole="link" style={[styles.footerLink, { marginTop: 5 }]}>
-        Hubungi Admin
-      </Text>
+      <Pressable onPress={onFeedback} accessibilityRole="link" hitSlop={{ top: 6, bottom: 2, right: 20 }} style={[styles.footerTouch, { marginTop: 40 }]}>
+        <Text style={styles.footerLink}>Berikan umpan balik</Text>
+      </Pressable>
+      <Pressable onPress={onContactAdmin} accessibilityRole="link" hitSlop={{ top: 2, bottom: 6, right: 20 }} style={[styles.footerTouch, { marginTop: 5 }]}>
+        <Text style={styles.footerLink}>Hubungi Admin</Text>
+      </Pressable>
     </Abs>
   );
 }
@@ -319,6 +346,12 @@ const styles = StyleSheet.create({
   snippetLead: {
     fontFamily: fonts.poppinsSemiBold,
   },
+  readMoreTouch: {
+    alignSelf: 'flex-end',
+  },
+  footerTouch: {
+    alignSelf: 'flex-start',
+  },
   readMore: {
     textAlign: 'right',
     color: colors.onDark,
@@ -334,12 +367,6 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     backgroundColor: colors.mint,
-  },
-  stateText: {
-    color: colors.mint,
-    fontFamily: fonts.medium,
-    fontSize: 13,
-    textAlign: 'center',
   },
   slideList: {
     width: SLIDE_W,

@@ -1,11 +1,14 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { router } from 'expo-router';
+
+import { Skeleton, SkeletonGroup } from '../../components/Skeleton';
+import { StateMessage, errorMessage } from '../../components/StateMessage';
 
 import { EncyclopediaLayout, type EncyclopediaBackground } from '../../components/encyclopedia/EncyclopediaLayout';
 import { ClassCard, FamilyPanel, GenusTile, KingdomCard, SpeciesCard } from '../../components/encyclopedia/TaxonCards';
 import { useTaxonPage } from '../../hooks/useEncyclopediaQueries';
-import { colors, fonts, layout } from '../../theme/tokens';
+import { layout } from '../../theme/tokens';
 import type { Taxon, TaxonRank } from '../../types/species.types';
 
 type Props = {
@@ -37,15 +40,16 @@ export function EncyclopediaScreen({ taxonId }: Props) {
 
   if (!data) {
     return (
-      <EncyclopediaLayout background="light" bottomInset={!isRoot}>
-        <View style={styles.state}>
-          {isPending && <ActivityIndicator color={colors.navy} />}
-          {isError && (
-            <Text style={styles.stateText} onPress={() => refetch()} accessibilityRole="button">
-              Gagal memuat data. Ketuk untuk mencoba lagi.
-            </Text>
-          )}
-        </View>
+      <EncyclopediaLayout background="light" title={isRoot ? 'Kingdom dan Filum' : undefined} titleWeight="extraBold" bottomInset={!isRoot}>
+        {isError && !isPending ? (
+          <StateMessage message={errorMessage('Data ensiklopedia')} actionLabel="Coba lagi" onAction={() => refetch()} />
+        ) : (
+          <SkeletonGroup label="Memuat ensiklopedia" style={isRoot ? styles.kingdomList : styles.classList}>
+            {Array.from({ length: isRoot ? 5 : 4 }, (_, i) => (
+              <Skeleton key={i} height={isRoot ? 132 : 75} />
+            ))}
+          </SkeletonGroup>
+        )}
       </EncyclopediaLayout>
     );
   }
@@ -119,11 +123,12 @@ export function EncyclopediaScreen({ taxonId }: Props) {
       bottomInset={!isRoot}
     >
       {empty ? (
-        <View style={styles.state}>
-          <Text style={[styles.stateText, background !== 'light' && styles.stateOnDark]}>
-            Data {taxon ? taxon.name : ''} belum tersedia.
-          </Text>
-        </View>
+        <StateMessage
+          tone={background === 'light' ? 'dark' : 'light'}
+          message={`Data ${taxon ? taxon.name : ''} belum tersedia. Kami sedang melengkapi ensiklopedia.`}
+          actionLabel="Kembali"
+          onAction={() => (router.canGoBack() ? router.back() : router.replace('/encyclopedia'))}
+        />
       ) : (
         body
       )}
@@ -146,18 +151,5 @@ const styles = StyleSheet.create({
   },
   speciesList: {
     gap: 23,
-  },
-  state: {
-    paddingVertical: 60,
-    alignItems: 'center',
-  },
-  stateText: {
-    color: colors.navy,
-    fontFamily: fonts.medium,
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  stateOnDark: {
-    color: colors.mint,
   },
 });

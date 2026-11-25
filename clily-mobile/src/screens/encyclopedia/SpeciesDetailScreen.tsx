@@ -1,11 +1,13 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '../../components/Button';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { Skeleton, SkeletonGroup } from '../../components/Skeleton';
+import { StateMessage, errorMessage } from '../../components/StateMessage';
 import { PhotoCarousel } from '../../components/encyclopedia/PhotoCarousel';
 import { IUCN_COLOR, TREND_COLOR } from '../../components/encyclopedia/statusColors';
 import { useSpeciesDetail } from '../../hooks/useEncyclopediaQueries';
@@ -28,14 +30,16 @@ export function SpeciesDetailScreen({ speciesId, onOpenDistribution }: Props) {
       <ScreenHeader title="Ensiklopedia" />
 
       {!species ? (
-        <View style={styles.state}>
-          {isPending && <ActivityIndicator color={colors.navy} />}
-          {isError && (
-            <Text style={styles.stateText} onPress={() => refetch()} accessibilityRole="button">
-              Data spesies tidak dapat dimuat. Ketuk untuk mencoba lagi.
-            </Text>
-          )}
-        </View>
+        isError && !isPending ? (
+          <StateMessage message={errorMessage('Data spesies')} actionLabel="Coba lagi" onAction={() => refetch()} />
+        ) : (
+          <SkeletonGroup label="Memuat detail spesies" style={styles.skeleton}>
+            <Skeleton width={220} height={28} radius={8} />
+            <Skeleton width={160} height={24} radius={8} style={styles.skeletonGap} />
+            <Skeleton width={312} height={312} style={styles.skeletonPhoto} />
+            <Skeleton width="100%" height={260} />
+          </SkeletonGroup>
+        )
       ) : (
         <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 44 }} showsVerticalScrollIndicator={false}>
           <View style={styles.titleBlock}>
@@ -107,17 +111,17 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  state: {
-    flex: 1,
+  skeleton: {
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
+    paddingTop: 20,
+    paddingHorizontal: 20,
   },
-  stateText: {
-    color: colors.navy,
-    fontFamily: fonts.medium,
-    fontSize: 14,
-    textAlign: 'center',
+  skeletonGap: {
+    marginTop: 8,
+  },
+  skeletonPhoto: {
+    marginTop: 24,
+    marginBottom: 24,
   },
   titleBlock: {
     marginTop: 16,

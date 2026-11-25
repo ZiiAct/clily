@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -8,6 +8,8 @@ import MapPlus from '../../assets/icons/map-plus.svg';
 import SearchSquare from '../../assets/icons/search-square.svg';
 import { Button } from '../../components/Button';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { Skeleton, SkeletonGroup } from '../../components/Skeleton';
+import { StateMessage, errorMessage } from '../../components/StateMessage';
 import { CommunityPhotosSheet } from '../../components/encyclopedia/CommunityPhotosSheet';
 import { useSpeciesDetail } from '../../hooks/useEncyclopediaQueries';
 import { colors, fonts } from '../../theme/tokens';
@@ -67,14 +69,14 @@ export function DistributionScreen({ speciesId }: Props) {
       <ScreenHeader title="Ensiklopedia" />
 
       {!species ? (
-        <View style={styles.state}>
-          {isPending && <ActivityIndicator color={colors.navy} />}
-          {isError && (
-            <Text style={styles.stateText} onPress={() => refetch()} accessibilityRole="button">
-              Peta sebaran tidak dapat dimuat. Ketuk untuk mencoba lagi.
-            </Text>
-          )}
-        </View>
+        isError && !isPending ? (
+          <StateMessage message={errorMessage('Peta sebaran')} actionLabel="Coba lagi" onAction={() => refetch()} />
+        ) : (
+          <SkeletonGroup label="Memuat peta sebaran" style={styles.skeleton}>
+            <Skeleton width={260} height={30} radius={8} />
+            <Skeleton width={BOX.w * sx} height={BOX.h * sx} style={styles.skeletonMap} />
+          </SkeletonGroup>
+        )
       ) : (
         <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 32 }} showsVerticalScrollIndicator={false}>
           <Text accessibilityRole="header" style={styles.title}>
@@ -175,17 +177,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.mint,
   },
-  state: {
-    flex: 1,
+  skeleton: {
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
+    paddingTop: 25,
   },
-  stateText: {
-    color: colors.navy,
-    fontFamily: fonts.medium,
-    fontSize: 14,
-    textAlign: 'center',
+  skeletonMap: {
+    marginTop: 25,
   },
   title: {
     marginTop: 25,

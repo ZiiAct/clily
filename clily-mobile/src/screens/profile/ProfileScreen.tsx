@@ -284,7 +284,8 @@ const styles = StyleSheet.create({
   },
   track: {
     marginTop: 17,
-    width: ROW_W,
+    width: '90%', // 330px on the 412px design, with margins on smaller phones
+    maxWidth: ROW_W,
     height: 7.8,
     borderRadius: 28,
     backgroundColor: colors.white,
@@ -313,7 +314,8 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   section: {
-    width: ROW_W,
+    width: '90%', // 330px on the 412px design, with margins on smaller phones
+    maxWidth: ROW_W,
     alignSelf: 'center',
     marginTop: 12,
     marginBottom: 6,
@@ -323,7 +325,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   row: {
-    width: ROW_W,
+    width: '90%', // 330px on the 412px design, with margins on smaller phones
+    maxWidth: ROW_W,
     alignSelf: 'center',
     height: 55,
     marginBottom: 6,
@@ -349,7 +352,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   linkRow: {
-    width: ROW_W,
+    width: '90%', // 330px on the 412px design, with margins on smaller phones
+    maxWidth: ROW_W,
     alignSelf: 'center',
     height: 30,
     marginBottom: 6,
@@ -377,7 +381,8 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   logout: {
-    width: ROW_W,
+    width: '90%', // 330px on the 412px design, with margins on smaller phones
+    maxWidth: ROW_W,
     alignSelf: 'center',
     marginTop: 12,
   },

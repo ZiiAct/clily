@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 
+import { Skeleton, SkeletonGroup } from '../../components/Skeleton';
+import { StateMessage, errorMessage } from '../../components/StateMessage';
 import { EncyclopediaLayout } from '../../components/encyclopedia/EncyclopediaLayout';
 import { SpeciesCard } from '../../components/encyclopedia/TaxonCards';
 import { useSpeciesSearch } from '../../hooks/useEncyclopediaQueries';
@@ -37,23 +39,21 @@ export function SpeciesResultsScreen({ initialQuery }: Props) {
       </Text>
 
       {!data ? (
-        <View style={styles.state}>
-          {isPending && <ActivityIndicator color={colors.navy} />}
-          {isError && (
-            <Text style={styles.stateText} onPress={() => refetch()} accessibilityRole="button">
-              Gagal memuat hasil. Ketuk untuk mencoba lagi.
-            </Text>
-          )}
-        </View>
+        isError && !isPending ? (
+          <StateMessage message={errorMessage('Hasil pencarian')} actionLabel="Coba lagi" onAction={() => refetch()} />
+        ) : (
+          <SkeletonGroup label="Memuat hasil" style={styles.list}>
+            {[0, 1, 2].map((i) => (
+              <Skeleton key={i} style={styles.cardSkeleton} />
+            ))}
+          </SkeletonGroup>
+        )
       ) : data.length === 0 ? (
-        <View style={styles.state}>
-          <Text style={styles.stateText}>Tidak ada makhluk hidup yang cocok.</Text>
-          {filtered && (
-            <Text style={styles.link} onPress={resetFilters} accessibilityRole="button">
-              Hapus semua filter
-            </Text>
-          )}
-        </View>
+        <StateMessage
+          message={query ? `Tidak ada makhluk hidup yang cocok dengan “${query}”.` : 'Tidak ada makhluk hidup yang cocok.'}
+          actionLabel={filtered ? 'Hapus semua filter' : undefined}
+          onAction={filtered ? resetFilters : undefined}
+        />
       ) : (
         <View style={styles.list}>
           {data.map((s) => (
@@ -77,21 +77,7 @@ const styles = StyleSheet.create({
     marginTop: 17,
     gap: 22,
   },
-  state: {
-    paddingVertical: 60,
-    alignItems: 'center',
-    gap: 12,
-  },
-  stateText: {
-    color: colors.navy,
-    fontFamily: fonts.medium,
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  link: {
-    color: colors.navy,
-    fontFamily: fonts.extraBold,
-    fontSize: 14,
-    textDecorationLine: 'underline',
+  cardSkeleton: {
+    aspectRatio: 371 / 252,
   },
 });

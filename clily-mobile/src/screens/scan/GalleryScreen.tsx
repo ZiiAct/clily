@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { FlatList, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,9 +7,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChecklistSheet, type ChecklistGroup } from '../../components/ChecklistSheet';
 import { FilterChip } from '../../components/FilterChip';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { StateMessage } from '../../components/StateMessage';
 import { GalleryCard } from '../../components/scan/GalleryCard';
 import { filterGallery, hasGalleryFilters, useGalleryStore } from '../../store/galleryStore';
-import { colors, fonts, gradients } from '../../theme/tokens';
+import { gradients } from '../../theme/tokens';
 import type { GalleryFilters } from '../../types/scan.types';
 
 /** Groups from the Figma "filter galeri" sheet. */
@@ -97,14 +98,11 @@ export function GalleryScreen({ onOpenItem }: Props) {
           />
         }
         ListEmptyComponent={
-          <View style={styles.empty}>
-            <Text style={styles.emptyText}>{filtered ? 'Tidak ada foto yang cocok dengan filter.' : 'Belum ada foto. Scan serangga dengan kamera.'}</Text>
-            {filtered && (
-              <Text style={styles.emptyLink} onPress={reset} accessibilityRole="button">
-                Hapus semua filter
-              </Text>
-            )}
-          </View>
+          <StateMessage
+            message={filtered ? 'Tidak ada foto yang cocok dengan filter.' : 'Belum ada foto. Scan serangga dengan kamera.'}
+            actionLabel={filtered ? 'Hapus semua filter' : undefined}
+            onAction={filtered ? reset : undefined}
+          />
         }
         renderItem={({ item }) => <GalleryCard item={item} width={cardWidth} onPress={() => onOpenItem(item.id)} />}
       />
@@ -141,24 +139,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: GAP,
     marginBottom: GAP,
-  },
-  empty: {
-    marginTop: 60,
-    alignItems: 'center',
-    gap: 12,
-    paddingHorizontal: 32,
-  },
-  emptyText: {
-    textAlign: 'center',
-    color: colors.navy,
-    fontFamily: fonts.medium,
-    fontSize: 14,
-  },
-  emptyLink: {
-    color: colors.navy,
-    fontFamily: fonts.extraBold,
-    fontSize: 14,
-    textDecorationLine: 'underline',
   },
   fade: {
     position: 'absolute',

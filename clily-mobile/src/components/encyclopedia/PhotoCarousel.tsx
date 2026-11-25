@@ -59,7 +59,10 @@ export function PhotoCarousel({ photos, label }: Props) {
     [],
   );
 
-  const mainLeft = (width - MAIN) / 2;
+  // Keep ~50px on each side for the arrows and peeks (Figma: 312px photo on a 412px screen).
+  const main = Math.min(MAIN, width - 100);
+  const mainLeft = (width - main) / 2;
+  const mainTop = 12 + (MAIN - main) / 2;
   const prev = photos[(index - 1 + count) % count];
   const next = photos[(index + 1) % count];
 
@@ -78,13 +81,13 @@ export function PhotoCarousel({ photos, label }: Props) {
           <View style={[styles.side, { left: mainLeft - GAP - SIDE }]}>
             <Image source={prev} style={styles.photo} resizeMode="cover" />
           </View>
-          <View style={[styles.side, { left: mainLeft + MAIN + GAP }]}>
+          <View style={[styles.side, { left: mainLeft + main + GAP }]}>
             <Image source={next} style={styles.photo} resizeMode="cover" />
           </View>
         </>
       )}
 
-      <View style={[styles.main, { left: mainLeft }]}>
+      <View style={[styles.main, { left: mainLeft, top: mainTop, width: main, height: main }]}>
         <Image key={index} source={photos[index]} style={styles.photo} resizeMode="cover" />
       </View>
 
@@ -104,7 +107,7 @@ export function PhotoCarousel({ photos, label }: Props) {
             accessibilityRole="button"
             accessibilityLabel="Foto berikutnya"
             hitSlop={14}
-            style={[styles.arrow, styles.arrowRight, { left: mainLeft + MAIN + 9 }]}
+            style={[styles.arrow, styles.arrowRight, { left: mainLeft + main + 9 }]}
           >
             <Chevron width={17.8076} height={29.6999} />
           </Pressable>
@@ -129,9 +132,6 @@ const styles = StyleSheet.create({
   },
   main: {
     position: 'absolute',
-    top: 12,
-    width: MAIN,
-    height: MAIN,
     borderRadius: 15,
     backgroundColor: colors.mint,
     ...shadow,

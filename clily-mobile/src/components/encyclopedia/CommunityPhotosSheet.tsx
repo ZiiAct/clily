@@ -3,6 +3,7 @@ import { FlatList, Image, Modal, Pressable, StyleSheet, Text, View } from 'react
 import { LinearGradient } from 'expo-linear-gradient';
 
 import UserSmall from '../../assets/icons/user-small.svg';
+import { StateMessage } from '../StateMessage';
 import { colors, fonts, gradients } from '../../theme/tokens';
 import type { CommunityPhoto } from '../../types/species.types';
 
@@ -46,7 +47,7 @@ export function CommunityPhotosSheet({ visible, photos, onClose }: Props) {
           columnWrapperStyle={styles.row}
           contentContainerStyle={styles.grid}
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={<Text style={styles.empty}>Belum ada foto dari pengguna untuk spesies ini.</Text>}
+          ListEmptyComponent={<StateMessage tone="light" message="Belum ada foto dari pengguna untuk spesies ini." />}
           renderItem={({ item }) => (
             <View style={styles.card} accessible accessibilityLabel={`Foto oleh ${item.author}`}>
               <View style={styles.photoFrame}>
@@ -147,14 +148,6 @@ const styles = StyleSheet.create({
     color: colors.navy,
     fontFamily: fonts.semiBold,
     fontSize: 12,
-  },
-  empty: {
-    marginTop: 60,
-    paddingHorizontal: 32,
-    textAlign: 'center',
-    color: colors.onDark,
-    fontFamily: fonts.medium,
-    fontSize: 14,
   },
   fade: {
     position: 'absolute',

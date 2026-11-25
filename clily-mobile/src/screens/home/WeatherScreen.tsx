@@ -1,9 +1,11 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 import { DesignCanvas } from '../../components/DesignCanvas';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { Skeleton, SkeletonGroup } from '../../components/Skeleton';
+import { StateMessage, errorMessage } from '../../components/StateMessage';
 import {
   AirQualityIcon,
   CurrentWeatherIllustration,
@@ -55,14 +57,17 @@ export function WeatherScreen() {
       <ScreenHeader title="Cuaca" variant="light" />
 
       {!weather ? (
-        <View style={styles.state}>
-          {isPending && <ActivityIndicator color={colors.mint} />}
-          {isError && (
-            <Text style={styles.stateText} onPress={() => refetch()} accessibilityRole="button">
-              Gagal memuat cuaca. Ketuk untuk mencoba lagi.
-            </Text>
-          )}
-        </View>
+        isError && !isPending ? (
+          <StateMessage tone="light" message={errorMessage('Cuaca')} actionLabel="Coba lagi" onAction={() => refetch()} />
+        ) : (
+          <SkeletonGroup label="Memuat cuaca" style={styles.skeleton}>
+            <Skeleton width={180} height={24} radius={8} tone="dark" />
+            <Skeleton width={203} height={109} tone="dark" style={styles.skeletonCenter} />
+            <Skeleton width={90} height={48} radius={10} tone="dark" style={styles.skeletonCenter} />
+            <Skeleton width="100%" height={60} tone="dark" style={styles.skeletonGap} />
+            <Skeleton width="100%" height={275} tone="dark" style={styles.skeletonGap} />
+          </SkeletonGroup>
+        )
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
           <DesignCanvas height={CANVAS_HEIGHT}>
@@ -136,17 +141,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.navy,
   },
-  state: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
+  skeleton: {
+    paddingTop: 40,
+    paddingHorizontal: 20,
   },
-  stateText: {
-    color: colors.mint,
-    fontFamily: fonts.medium,
-    fontSize: 13,
-    textAlign: 'center',
+  skeletonCenter: {
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+  skeletonGap: {
+    marginTop: 30,
   },
   location: {
     color: colors.white,

@@ -155,7 +155,7 @@ export function CameraScreen({ latestPhoto, onIdentify, onShowResult, onOpenGall
           onPress={() => setZoomIndex((i) => Math.max(0, i - 1))}
           accessibilityRole="button"
           accessibilityLabel="Perkecil zoom"
-          hitSlop={14}
+          hitSlop={18} // 8px dot → 44px touch target
           style={styles.zoomDot}
         />
         <View style={styles.zoomCircle} accessible accessibilityLabel={`Zoom ${ZOOMS[zoomIndex].label}`}>
@@ -165,7 +165,7 @@ export function CameraScreen({ latestPhoto, onIdentify, onShowResult, onOpenGall
           onPress={() => setZoomIndex((i) => Math.min(ZOOMS.length - 1, i + 1))}
           accessibilityRole="button"
           accessibilityLabel="Perbesar zoom"
-          hitSlop={14}
+          hitSlop={18}
           style={styles.zoomDot}
         />
       </View>

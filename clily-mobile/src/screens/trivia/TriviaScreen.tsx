@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 
@@ -7,6 +7,8 @@ import EditPencil from '../../assets/icons/edit-pencil.svg';
 import EditSparkles from '../../assets/icons/edit-sparkles.svg';
 import { MessageDialog } from '../../components/MessageDialog';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { Skeleton, SkeletonGroup, SkeletonLines } from '../../components/Skeleton';
+import { StateMessage, errorMessage } from '../../components/StateMessage';
 import { AddTriviaModal } from '../../components/trivia/AddTriviaModal';
 import { submitTrivia } from '../../api/newsApi';
 import { useTodayTrivia } from '../../hooks/useNewsQueries';
@@ -37,14 +39,19 @@ export function TriviaScreen() {
         </Text>
 
         {!trivia ? (
-          <View style={styles.state}>
-            {isPending && <ActivityIndicator color={colors.navy} />}
-            {isError && (
-              <Text style={styles.stateText} onPress={() => refetch()} accessibilityRole="button">
-                Trivia gagal dimuat. Ketuk untuk mencoba lagi.
-              </Text>
-            )}
-          </View>
+          isError && !isPending ? (
+            <StateMessage message={errorMessage('Trivia hari ini')} actionLabel="Coba lagi" onAction={() => refetch()} />
+          ) : (
+            <SkeletonGroup label="Memuat trivia">
+              <Skeleton height={246} radius={20} />
+              <View style={styles.skeletonText}>
+                <SkeletonLines lines={2} lineHeight={22} />
+                <View style={styles.skeletonGap}>
+                  <SkeletonLines lines={8} />
+                </View>
+              </View>
+            </SkeletonGroup>
+          )
         ) : (
           <View style={[styles.card, cardShadow]}>
             <LinearGradient
@@ -132,15 +139,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.extraBold,
     fontSize: 40,
   },
-  state: {
-    paddingVertical: 60,
-    alignItems: 'center',
+  skeletonText: {
+    paddingTop: 24,
+    paddingHorizontal: 15,
   },
-  stateText: {
-    color: colors.navy,
-    fontFamily: fonts.medium,
-    fontSize: 14,
-    textAlign: 'center',
+  skeletonGap: {
+    marginTop: 16,
   },
   card: {
     borderRadius: 15,

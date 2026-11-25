@@ -48,7 +48,7 @@ export function NewsCard({ article, bookmarked, onOpen, onToggleBookmark, onOpen
       >
         {bookmarked ? <BookmarkSavedIcon width={32} height={32} /> : <BookmarkIcon width={32} height={32} />}
       </Pressable>
-      <Pressable onPress={onOpenLink} accessibilityRole="link" accessibilityLabel="Buka di browser" hitSlop={8} style={styles.openLink}>
+      <Pressable onPress={onOpenLink} accessibilityRole="link" accessibilityLabel="Buka di browser" hitSlop={10} style={styles.openLink}>
         <OpenLinkIcon width={24} height={24} />
       </Pressable>
     </Pressable>

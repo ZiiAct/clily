@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { Skeleton, SkeletonGroup } from '../../components/Skeleton';
+import { StateMessage, errorMessage } from '../../components/StateMessage';
 import { SearchBar } from '../../components/SearchBar';
 import { NewsCard } from '../../components/news/NewsCard';
 import { useArticles } from '../../hooks/useNewsQueries';
 import { useNewsStore } from '../../store/newsStore';
-import { colors, fonts, layout } from '../../theme/tokens';
+import { colors, layout } from '../../theme/tokens';
 import type { NewsArticle } from '../../types/news.types';
 
 type Props = {
@@ -47,17 +49,24 @@ export function NewsScreen({ onOpenArticle, onOpenLink }: Props) {
           />
         }
         ListEmptyComponent={
-          <View style={styles.state}>
-            {isPending ? (
-              <ActivityIndicator color={colors.navy} />
-            ) : isError ? (
-              <Text style={styles.stateText} onPress={() => refetch()} accessibilityRole="button">
-                Berita gagal dimuat. Ketuk untuk mencoba lagi.
-              </Text>
-            ) : (
-              <Text style={styles.stateText}>Tidak ada berita untuk “{query}”.</Text>
-            )}
-          </View>
+          isPending ? (
+            <SkeletonGroup label="Memuat berita" style={styles.skeleton}>
+              {[0, 1, 2].map((i) => (
+                <Skeleton key={i} height={214} />
+              ))}
+            </SkeletonGroup>
+          ) : isError ? (
+            <StateMessage message={errorMessage('Berita')} actionLabel="Coba lagi" onAction={() => refetch()} />
+          ) : (
+            <StateMessage
+              message={`Tidak ada berita untuk “${query}”.`}
+              actionLabel="Tampilkan semua berita"
+              onAction={() => {
+                setInput('');
+                setQuery('');
+              }}
+            />
+          )
         }
         renderItem={({ item }) => (
           <NewsCard
@@ -90,14 +99,7 @@ const styles = StyleSheet.create({
   gap: {
     height: 16,
   },
-  state: {
-    paddingVertical: 60,
-    alignItems: 'center',
-  },
-  stateText: {
-    color: colors.navy,
-    fontFamily: fonts.medium,
-    fontSize: 14,
-    textAlign: 'center',
+  skeleton: {
+    gap: 16,
   },
 });
